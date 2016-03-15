@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+  <bean id="a" class="com.sist.test.A"/>
+  <bean id="b" class="com.sist.test.B"/>
+  <bean id="c" class="com.sist.test.C"/>
+</beans>
