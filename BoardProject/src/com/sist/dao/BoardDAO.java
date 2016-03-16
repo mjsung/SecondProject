@@ -5,7 +5,7 @@ import java.util.*;
 public class BoardDAO {
    private Connection conn;
    private PreparedStatement ps;
-   private final String URL="jdbc:oracle:thin:@211.238.142.20:1521:ORCL";
+   private final String URL="jdbc:oracle:thin:@211.238.142.28:1521:ORCL";
    private static BoardDAO dao;
    // Driver µî·Ï
    public BoardDAO()
