@@ -61,9 +61,14 @@
        <table border=0 width=700>
          <tr>
            <td align=right>
-            <img src="image/btn_reply.gif">
-            <img src="image/btn_modify.gif">
+           <a href="reply.jsp?no=<%=strNo%>&page=<%=strPage%>">
+            <img src="image/btn_reply.gif" border=0></a>
+           
+           <a href="update.jsp?no=<%=strNo%>&page=<%=strPage%>">
+            <img src="image/btn_modify.gif" border=0></a>
+           
             <img src="image/btn_delete.gif" id="del">
+            
             <a href="list.jsp?page=<%=strPage%>">
             <img src="image/btn_list.gif" border=0></a>
            </td>

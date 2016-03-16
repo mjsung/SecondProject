@@ -39,7 +39,7 @@
      => 지시자  : page
         page의 속성 
         language="java" : 다른언어 사용이 가능 
-        info="게시판 내용보기 화면 (2016.03.14 최용훈 제작)"          
+        info="게시판 내용보기 화면 (2016.03.14 성민재 제작)"          
         ***contentType="text/html,text/xml;charset=EUC-KR,UTF-8" 
         ***import : 자바 클래스 로딩 
         <%@ page import="java.io.*,java.util.*">

@@ -29,7 +29,8 @@
      <table border=0 width=700>
        <tr>
         <td align=left>
-         <img src="image/btn_write.gif">
+        <a href="insert.jsp">
+         <img src="image/btn_write.gif" border=0></a>
         </td>
        </tr>
      </table>

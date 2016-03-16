@@ -171,6 +171,145 @@ public class BoardDAO {
 	   }
 	   return d;
    }
+   //데이터 추가
+   public void boardInsert(BoardDTO d)
+   {
+	   try
+	   {
+		   getConnection();
+		   String sql="INSERT INTO board(no,name,subject,content,pwd,group_id) VALUES((SELECT NVL(MAX(no)+1,1) FROM board), ?,?,?,?,(SELECT NVL(MAX(group_id)+1,1) FROM board))";
+		   ps=conn.prepareStatement(sql);
+		   ps.setString(1, d.getName());
+		   ps.setString(2, d.getSubject());
+		   ps.setString(3, d.getContent());
+		   ps.setString(4, d.getPwd());
+		   ps.executeUpdate();
+	   }catch(Exception ex)
+	   {
+		   System.out.println(ex.getMessage());
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+   }
+   public void boardReply(int pno, BoardDTO d){
+	      try{
+	           getConnection();
+	           String sql= "select group_id, group_step, group_tab from board where no = ?";
+	           ps=conn.prepareStatement(sql);
+	           ps.setInt(1, pno);
+	           ResultSet rs = ps.executeQuery();
+	           
+	           rs.next();
+	           int gi = rs.getInt(1);
+	           int gs = rs.getInt(2);
+	           int gt = rs.getInt(3);
+	           rs.close();
+	           ps.close();
+	           
+	           sql= "update board set group_step = group_step + 1 where group_id = ? and group_step > ? ";
+	           ps=conn.prepareStatement(sql);
+	           ps.setInt(1, gi);
+	           ps.setInt(2, gs);
+	           ps.executeUpdate();
+	           ps.close();
+	           
+	           
+	           sql = "update board set depth = depth + 1 where no = ? ";
+	           ps=conn.prepareStatement(sql);
+	           ps.setInt(1, pno);
+	           ps.executeUpdate();
+	           ps.close();
+	           
+	           sql = "insert into board(no, name, subject, content, pwd, group_id, group_step, group_tab, root ) "
+	                 + "values ((SELECT NVL(MAX(no)+1,1) FROM board), ?, ?, ?, ?, ?, ?, ?, ?) ";
+	           ps=conn.prepareStatement(sql);
+	           ps.setString(1, d.getName());
+	           ps.setString(2, d.getSubject());
+	           ps.setString(3, d.getContent());
+	           ps.setString(4, d.getPwd());
+	           ps.setInt(5, gi);
+	           ps.setInt(6, gs+1);
+	           ps.setInt(7, gt+1);
+	           ps.setInt(8, pno);
+	           ps.executeUpdate();
+	           
+	        }catch(Exception ex){
+	           System.out.println(ex.getMessage());
+	        }finally {
+	           disConnection();
+	        }
+   
+   }
+   public BoardDTO boardUpdateData(int no)
+   {
+	   BoardDTO d=new BoardDTO();
+	   try
+	   {
+		   getConnection();
+		  
+		   String sql="SELECT name,subject,content "
+			  +"FROM board "
+			  +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, no);
+		   ResultSet rs=ps.executeQuery();
+		   rs.next();
+		   d.setName(rs.getString(1));
+		   d.setSubject(rs.getString(2));
+		   d.setContent(rs.getString(3));
+		   rs.close();
+	   }catch(Exception ex)
+	   {
+		   System.out.println(ex.getMessage());
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return d;
+   }
+   public boolean boardUpdate(BoardDTO d)
+   {
+	   boolean bCheck=false;
+	   try
+	   {
+		   getConnection();
+		   String sql="SELECT pwd FROM board WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, d.getNo());
+		   ResultSet rs=ps.executeQuery();
+		   rs.next();
+		   String pwd=rs.getString(1);
+		   rs.close();
+		   ps.close();
+		   if(pwd.equals(d.getPwd()))
+		   {
+			   bCheck=true;
+			   sql="UPDATE board set name=?,subject=?, content=? WHERE no=?";
+			   ps=conn.prepareStatement(sql);
+			   ps.setString(1, d.getName());
+			   ps.setString(2, d.getSubject());
+			   ps.setString(3, d.getContent());
+			   ps.setInt(4, d.getNo());
+			   ps.executeUpdate();
+			   
+		   }
+		   else
+		   {
+			   bCheck=false;
+		   }
+		   
+	   }catch(Exception ex){
+		   System.out.println(ex.getMessage());
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return bCheck;
+   }
 }
 
 
